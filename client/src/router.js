@@ -5,17 +5,17 @@ import ProductListPage from './pages/ProductListPage.js';
 
 const routes = [
   {
-    path: '/',
+    path: '/web/',
     name: 'home',
     page: ({ $target }) => new ProductListPage($target),
   },
   {
-    path: '/products/:id',
+    path: '/web/products/:id',
     name: 'product',
     page: ({ $target, param }) => new ProductDetailPage($target, param.id),
   },
   {
-    path: '/cart',
+    path: '/web/cart',
     name: 'cart',
     page: ({ $target }) => new CartPage($target),
   },
@@ -24,11 +24,11 @@ const routes = [
 const router = {
   findMatchingRoute(pathname) {
     const route = routes.find(
-      (route) => route.path.split('/')[1] === pathname.split('/')[1]
+      (route) => route.path.split('/')[2] === pathname.split('/')[2]
     );
 
     if (route.name === 'product') {
-      route.param = { id: pathname.split('/')[2] };
+      route.param = { id: pathname.split('/')[3] };
     }
 
     return (
