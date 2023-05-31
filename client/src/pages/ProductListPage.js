@@ -16,6 +16,19 @@ export default class ProductListPage {
 
     const products = await api.getProducts();
     this.renderProducts(products);
+
+    this.$target.querySelector('ul').addEventListener('click', (e) => {
+      const $li = e.target.closest('li');
+      if (!$li) return;
+
+      const productId = $li.id;
+      const urlchangeEvent = new CustomEvent('urlchange', {
+        detail: {
+          path: `/web/products/${productId}`,
+        },
+      });
+      window.dispatchEvent(urlchangeEvent);
+    });
   }
 
   renderProducts(products) {
