@@ -27,13 +27,14 @@ const router = {
       (route) => route.path.split('/')[2] === pathname.split('/')[2]
     );
 
-    if (route.name === 'product') {
+    if (route && route.name === 'product') {
       route.param = { id: pathname.split('/')[3] };
     }
 
     return (
       route ?? {
         path: pathname,
+        name: 'not found',
         page: ({ $target }) => new NotFoundPage($target),
       }
     );
