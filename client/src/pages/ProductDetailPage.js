@@ -31,7 +31,7 @@ export default class ProductDetailPage {
                         if (option.price > 0)
                           text += `(+${formatCurrency(option.price)}원)`;
 
-                        return `<option ${
+                        return `<option value="${option.name}" ${
                           option.stock === 0 ? 'disabled' : ''
                         }>${text}</option>`;
                       })
@@ -42,8 +42,31 @@ export default class ProductDetailPage {
             </div>
         </div>
     `;
-
     this.renderSelectedOptions();
+
+    // 상품 옵션 선택 이벤트 핸들러
+    this.$target.querySelector('select').addEventListener('change', (e) => {
+      const selectedOption = product.productOptions.find(
+        (option) => option.name === e.target.value
+      );
+      if (!selectedOption) return;
+
+      const alreadySelectedOption = this.selectedOptions.find(
+        (option) => option.optionId === selectedOption.id
+      );
+      if (alreadySelectedOption) {
+        alreadySelectedOption.quantity++;
+      } else {
+        this.selectedOptions.push({
+          productId: product.id,
+          productPrice: product.price + selectedOption.price,
+          optionId: selectedOption.id,
+          optionName: selectedOption.name,
+          quantity: 1,
+        });
+      }
+      this.renderSelectedOptions();
+    });
   }
 
   renderSelectedOptions() {
@@ -53,8 +76,8 @@ export default class ProductDetailPage {
       ${this.selectedOptions
         .map(
           (option) => `
-            <li>${option.productName} ${option.productPrice}원
-              <div><input type="number" value="${option.count}">개</div>
+            <li>${option.optionName} ${option.productPrice}원
+              <div><input type="number" value="${option.quantity}">개</div>
             </li>
         `
         )
@@ -68,7 +91,7 @@ export default class ProductDetailPage {
   calcTotalPrice() {
     let price = 0;
     this.selectedOptions.forEach((option) => {
-      price += option.productPrice * option.count;
+      price += option.productPrice * option.quantity;
     });
     return price;
   }
