@@ -1,5 +1,6 @@
 import api from '../api.js';
 import { loadData } from '../storage.js';
+import { formatCurrency } from '../utils.js';
 
 export default class CartPage {
   constructor($target) {
@@ -49,10 +50,10 @@ export default class CartPage {
         <li class="Cart__item">
           <img src="${item.productImageUrl}">
           <div class="Cart__itemDesription">
-            <div>${item.productName} ${item.optionName} ${
+            <div>${item.productName} ${item.optionName} ${formatCurrency(
             item.productPrice
-          }원 ${item.quantity}개</div>
-            <div>${item.productPrice * item.quantity}원</div>
+          )}원 ${item.quantity}개</div>
+            <div>${formatCurrency(item.productPrice * item.quantity)}원</div>
           </div>
         </li>
       `
@@ -65,6 +66,6 @@ export default class CartPage {
     }, 0);
 
     const $totalPrice = this.$target.querySelector('.Cart__totalPrice');
-    $totalPrice.innerHTML = `총 상품가격 ${totalPrice}원`;
+    $totalPrice.innerHTML = `총 상품가격 ${formatCurrency(totalPrice)}원`;
   }
 }
