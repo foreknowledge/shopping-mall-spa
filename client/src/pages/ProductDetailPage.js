@@ -76,7 +76,7 @@ export default class ProductDetailPage {
       ${this.selectedOptions
         .map(
           (option) => `
-            <li>${option.optionName} ${option.productPrice}원
+            <li id=${option.optionId}>${option.optionName} ${option.productPrice}원
               <div><input type="number" value="${option.quantity}">개</div>
             </li>
         `
@@ -86,6 +86,28 @@ export default class ProductDetailPage {
       <div class="ProductDetail__totalPrice">${this.calcTotalPrice()}원</div>
       <button class="OrderButton">주문하기</button>
     `;
+
+    this.$target
+      .querySelectorAll('.ProductDetail__selectedOptions input')
+      .forEach(($el) => {
+        $el.onchange = (e) => {
+          if (e.target.value < 1) {
+            e.target.value = 1;
+          }
+
+          const $li = e.target.closest('li');
+          if (!$li) return;
+
+          const optionId = parseInt($li.id);
+          const selectedOption = this.selectedOptions.find(
+            (option) => option.optionId === optionId
+          );
+          if (!selectedOption) return;
+
+          selectedOption.quantity = e.target.value;
+          this.renderSelectedOptions();
+        };
+      });
   }
 
   calcTotalPrice() {
