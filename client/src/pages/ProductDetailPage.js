@@ -79,14 +79,18 @@ export default class ProductDetailPage {
       ${this.selectedOptions
         .map(
           (option) => `
-            <li id=${option.optionId}>${option.optionName} ${option.productPrice}원
+            <li id=${option.optionId}>${option.optionName} ${formatCurrency(
+            option.productPrice
+          )}원
               <div><input type="number" value="${option.quantity}">개</div>
             </li>
         `
         )
         .join('')}
       </ul>
-      <div class="ProductDetail__totalPrice">${this.calcTotalPrice()}원</div>
+      <div class="ProductDetail__totalPrice">${formatCurrency(
+        this.calcTotalPrice()
+      )}원</div>
       <button class="OrderButton">주문하기</button>
     `;
 
