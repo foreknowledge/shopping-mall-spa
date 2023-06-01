@@ -1,6 +1,6 @@
 import api from '../api.js';
 import router from '../router.js';
-import { loadData } from '../storage.js';
+import { loadData, removeData } from '../storage.js';
 import { formatCurrency } from '../utils.js';
 
 export default class CartPage {
@@ -31,6 +31,13 @@ export default class CartPage {
     `;
 
     this.renderCartItems();
+
+    const $orderButton = this.$target.querySelector('.OrderButton');
+    $orderButton.addEventListener('click', () => {
+      alert('주문 되었습니다!');
+      removeData('products_cart');
+      router.navigateTo('/web/');
+    });
   }
 
   async renderCartItems() {
