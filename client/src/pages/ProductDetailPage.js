@@ -1,4 +1,6 @@
 import api from '../api.js';
+import router from '../router.js';
+import { loadData, saveData } from '../storage.js';
 import { formatCurrency } from '../utils.js';
 
 export default class ProductDetailPage {
@@ -112,6 +114,26 @@ export default class ProductDetailPage {
           this.renderSelectedOptions();
         };
       });
+
+    // 주문하기 버튼 이벤트 핸들러
+    this.$target.querySelector('.OrderButton').onclick = () => {
+      if (this.selectedOptions.length === 0) {
+        alert('상품을 선택해주세요.');
+        return;
+      }
+
+      const cartData = loadData('products_cart') ?? [];
+
+      const newOrder = this.selectedOptions.map((option) => ({
+        productId: option.productId,
+        optionId: option.optionId,
+        quantity: option.quantity,
+      }));
+
+      saveData('products_cart', cartData.concat(newOrder));
+
+      router.navigateTo('/web/cart');
+    };
   }
 
   calcTotalPrice() {
