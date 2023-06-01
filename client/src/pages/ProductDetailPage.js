@@ -45,7 +45,7 @@ export default class ProductDetailPage {
     this.renderSelectedOptions();
 
     // 상품 옵션 선택 이벤트 핸들러
-    this.$target.querySelector('select').addEventListener('change', (e) => {
+    this.$target.querySelector('select').onchange = (e) => {
       const selectedOption = product.productOptions.find(
         (option) => option.name === e.target.value
       );
@@ -62,11 +62,12 @@ export default class ProductDetailPage {
           productPrice: product.price + selectedOption.price,
           optionId: selectedOption.id,
           optionName: selectedOption.name,
+          stock: selectedOption.stock,
           quantity: 1,
         });
       }
       this.renderSelectedOptions();
-    });
+    };
   }
 
   renderSelectedOptions() {
@@ -87,14 +88,11 @@ export default class ProductDetailPage {
       <button class="OrderButton">주문하기</button>
     `;
 
+    // 상품 수량 변경 이벤트 핸들러
     this.$target
       .querySelectorAll('.ProductDetail__selectedOptions input')
       .forEach(($el) => {
         $el.onchange = (e) => {
-          if (e.target.value < 1) {
-            e.target.value = 1;
-          }
-
           const $li = e.target.closest('li');
           if (!$li) return;
 
@@ -103,6 +101,12 @@ export default class ProductDetailPage {
             (option) => option.optionId === optionId
           );
           if (!selectedOption) return;
+
+          if (e.target.value < 1) {
+            e.target.value = 1;
+          } else if (e.target.value > selectedOption.stock) {
+            e.target.value = selectedOption.stock;
+          }
 
           selectedOption.quantity = e.target.value;
           this.renderSelectedOptions();
