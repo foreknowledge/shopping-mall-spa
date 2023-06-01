@@ -1,4 +1,5 @@
 import api from '../api.js';
+import router from '../router.js';
 import { loadData } from '../storage.js';
 import { formatCurrency } from '../utils.js';
 
@@ -8,6 +9,14 @@ export default class CartPage {
   }
 
   render() {
+    this.productsCart = loadData('products_cart') ?? [];
+
+    if (this.productsCart.length === 0) {
+      alert('장바구니가 비어있습니다.');
+      router.navigateTo('/web/', true);
+      return;
+    }
+
     this.$target.innerHTML = `
        <div class="CartPage">
         <h1>장바구니</h1>
@@ -25,9 +34,8 @@ export default class CartPage {
   }
 
   async renderCartItems() {
-    let cartData = loadData('products_cart') ?? [];
-    cartData = await Promise.all(
-      cartData.map(async (item) => {
+    const cartData = await Promise.all(
+      this.productsCart.map(async (item) => {
         const product = await api.getProduct(item.productId);
         const option = product.productOptions.find(
           (o) => o.id === item.optionId

@@ -13,7 +13,12 @@ window.addEventListener('urlchange', (e) => {
   if (e.detail.path === window.location.pathname) {
     return;
   }
-  window.history.pushState(null, '', e.detail.path);
+
+  if (e.detail.replace) {
+    window.history.replaceState(null, '', e.detail.path);
+  } else {
+    window.history.pushState(null, '', e.detail.path);
+  }
 
   route();
 });

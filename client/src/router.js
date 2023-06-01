@@ -39,9 +39,9 @@ const router = {
       }
     );
   },
-  navigateTo(path) {
+  navigateTo(path, replace = false) {
     const urlchangeEvent = new CustomEvent('urlchange', {
-      detail: { path },
+      detail: { path, replace },
     });
     window.dispatchEvent(urlchangeEvent);
   },
