@@ -23,7 +23,7 @@ export default class ProductListPage {
       if (!$li) return;
 
       const productId = $li.id;
-      router.navigateTo(`/web/products/${productId}`);
+      router.navigateTo(`/products/${productId}`);
     });
   }
 

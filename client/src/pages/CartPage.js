@@ -13,7 +13,7 @@ export default class CartPage {
 
     if (this.productsCart.length === 0) {
       alert('장바구니가 비어있습니다.');
-      router.navigateTo('/web/', true);
+      router.navigateTo('/', true);
       return;
     }
 
@@ -36,7 +36,7 @@ export default class CartPage {
     $orderButton.addEventListener('click', () => {
       alert('주문 되었습니다!');
       removeData('products_cart');
-      router.navigateTo('/web/');
+      router.navigateTo('/');
     });
   }
 

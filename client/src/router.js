@@ -41,7 +41,10 @@ const router = {
   },
   navigateTo(path, replace = false) {
     const urlchangeEvent = new CustomEvent('urlchange', {
-      detail: { path, replace },
+      detail: {
+        path: '/web' + path,
+        replace,
+      },
     });
     window.dispatchEvent(urlchangeEvent);
   },

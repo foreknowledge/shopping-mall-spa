@@ -136,7 +136,7 @@ export default class ProductDetailPage {
 
       saveData('products_cart', cartData.concat(newOrder));
 
-      router.navigateTo('/web/cart');
+      router.navigateTo('/cart');
     };
   }
 
