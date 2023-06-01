@@ -1,4 +1,5 @@
 import api from '../api.js';
+import router from '../router.js';
 import { formatCurrency } from '../utils.js';
 
 export default class ProductListPage {
@@ -22,12 +23,7 @@ export default class ProductListPage {
       if (!$li) return;
 
       const productId = $li.id;
-      const urlchangeEvent = new CustomEvent('urlchange', {
-        detail: {
-          path: `/web/products/${productId}`,
-        },
-      });
-      window.dispatchEvent(urlchangeEvent);
+      router.navigateTo(`/web/products/${productId}`);
     });
   }
 

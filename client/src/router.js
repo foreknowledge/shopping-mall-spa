@@ -39,6 +39,12 @@ const router = {
       }
     );
   },
+  navigateTo(path) {
+    const urlchangeEvent = new CustomEvent('urlchange', {
+      detail: { path },
+    });
+    window.dispatchEvent(urlchangeEvent);
+  },
 };
 
 export default router;
