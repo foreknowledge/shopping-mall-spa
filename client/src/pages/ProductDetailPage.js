@@ -95,29 +95,30 @@ export default class ProductDetailPage {
     `;
 
     // 상품 수량 변경 이벤트 핸들러
-    this.$target
-      .querySelectorAll('.ProductDetail__selectedOptions input')
-      .forEach(($el) => {
-        $el.onchange = (e) => {
-          const $li = e.target.closest('li');
-          if (!$li) return;
+    const $selectedOptions = this.$target.querySelector(
+      '.ProductDetail__selectedOptions'
+    );
+    $selectedOptions.onchange = (e) => {
+      if (e.target.tagName !== 'INPUT') return;
 
-          const optionId = parseInt($li.id);
-          const selectedOption = this.selectedOptions.find(
-            (option) => option.optionId === optionId
-          );
-          if (!selectedOption) return;
+      const $li = e.target.closest('li');
+      if (!$li) return;
 
-          if (e.target.value < 1) {
-            e.target.value = 1;
-          } else if (e.target.value > selectedOption.stock) {
-            e.target.value = selectedOption.stock;
-          }
+      const optionId = parseInt($li.id);
+      const selectedOption = this.selectedOptions.find(
+        (option) => option.optionId === optionId
+      );
+      if (!selectedOption) return;
 
-          selectedOption.quantity = e.target.value;
-          this.renderSelectedOptions();
-        };
-      });
+      if (e.target.value < 1) {
+        e.target.value = 1;
+      } else if (e.target.value > selectedOption.stock) {
+        e.target.value = selectedOption.stock;
+      }
+
+      selectedOption.quantity = e.target.value;
+      this.renderSelectedOptions();
+    };
 
     // 주문하기 버튼 이벤트 핸들러
     this.$target.querySelector('.OrderButton').onclick = () => {
