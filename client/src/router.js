@@ -5,17 +5,17 @@ import ProductListPage from './pages/ProductListPage.js';
 
 const routes = [
   {
-    path: '/web/',
+    path: '/',
     name: 'home',
     page: ({ $target }) => new ProductListPage($target),
   },
   {
-    path: '/web/products/:id',
+    path: '/products/:id',
     name: 'product',
     page: ({ $target, param }) => new ProductDetailPage($target, param.id),
   },
   {
-    path: '/web/cart',
+    path: '/cart',
     name: 'cart',
     page: ({ $target }) => new CartPage($target),
   },
@@ -24,11 +24,11 @@ const routes = [
 const router = {
   findMatchingRoute(pathname) {
     const route = routes.find(
-      (route) => route.path.split('/')[2] === pathname.split('/')[2]
+      (route) => route.path.split('/')[1] === pathname.split('/')[1]
     );
 
     if (route && route.name === 'product') {
-      route.param = { id: pathname.split('/')[3] };
+      route.param = { id: pathname.split('/')[2] };
     }
 
     return (
@@ -41,10 +41,7 @@ const router = {
   },
   navigateTo(path, replace = false) {
     const urlchangeEvent = new CustomEvent('urlchange', {
-      detail: {
-        path: '/web' + path,
-        replace,
-      },
+      detail: { path, replace },
     });
     window.dispatchEvent(urlchangeEvent);
   },
